@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 x = np.array([40.53997731208801, 5.279474496841431, 13.834216833114624, 0.4826686382293701, 9.043976783752441, 1.274404525756836, 22.9407057762146, 6.9063615798950195, 23.409835815429688, 0.5548770427703857, 1.5165092945098877, 0.7797784805297852, 1.386063814163208, 7.168926239013672, 2.985248565673828, 8.224418640136719, 0.761488676071167, 5.1436240673065186, 32.093530893325806, 1.2646472454071045, 0.6116585731506348, 1.0565593242645264, 0.8769888877868652, 2.4289259910583496, 0.5818736553192139, 0.8813073635101318, 0.6081583499908447, 1.2267823219299316, 0.8969495296478271, 2.6397664546966553, 3.687321901321411, 1.8074851036071777, 0.49352240562438965, 18.44595980644226, 32.70216774940491, 0.8713347911834717, 2.4910409450531006, 30.36480474472046, 25.827628135681152, 21.858869075775146, 1.2779157161712646, 0.470350980758667, 1.4334440231323242, 1.5707144737243652, 1.501718521118164, 5.4802162647247314, 0.4989337921142578, 1.8788440227508545, 2.1419923305511475, 7.369754314422607])
 result = plt.hist(x, bins=20, color='c', edgecolor='k')
-plt.axvline(x.mean(), color='k', linestyle='dashed', linewidth=1, label='sr. vrednost')
-plt.axvline(np.median(x), color='r', linestyle='dashed', linewidth=1, label='medijana')
+plt.axvline(x.mean(), color='k', linestyle='dashed', linewidth=1, label='sr. vrednost HGA')
+plt.axvline(np.median(x), color='r', linestyle='dashed', linewidth=1, label='medijana HGA')
 plt.ylabel("učestalost")
 plt.xlabel("vreme izvršavanja")
 ax = plt.subplot(111)
@@ -12,4 +12,20 @@ ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 
 # Put a legend to the right of the current axis
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.show()
+
+
+iter_h = [916, 149, 356, 54, 251, 81, 561, 209, 606, 68, 93, 63, 75, 248, 111, 245, 67, 146, 745, 67, 73, 74, 69, 116, 69, 88, 61, 78, 69, 116, 126, 89, 50, 440, 825, 62, 110, 639, 662, 543, 71, 58, 76, 84, 89, 176, 48, 95, 89, 223]
+iter_s = [747, 953, 641, 143, 129, 298, 575, 160, 186, 513, 141, 129, 272, 183, 483, 231, 117, 151, 195, 277, 240, 731, 225, 121, 207, 185, 296, 154, 450, 963, 212, 256, 166, 101, 444, 416, 142, 227, 517, 149, 232, 380, 133, 211, 140, 537, 152, 663, 253, 703]
+plt.ylabel("učestalost")
+plt.xlabel("generacija")
+plt.hist(iter_h, bins=20, color='c', edgecolor='k', alpha = 0.5, label="HGA")
+plt.hist(iter_s, bins=20, color='r', edgecolor='k', alpha = 0.5, label="GA")
+ax = plt.subplot(111)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
 plt.show()

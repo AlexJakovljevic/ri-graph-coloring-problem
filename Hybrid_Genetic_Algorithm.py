@@ -27,15 +27,23 @@ class Genetic_Algorithm:
         chromosomes = self.initial_population()
         self._top_chromosome = Chromosome(min(chromosomes, key=attrgetter('fitness')),
                                           min(chromosomes, key=attrgetter('fitness')).fitness)
-
+        generation_sum_fitness = []
+        generation_best_fitness = []
         while not self.stop_condition():
             new_generation = heapq.nsmallest(self._elite_size, chromosomes)
             for_reproduction = self.selection_tournament(chromosomes) + new_generation
             chromosomes = self.create_generation(for_reproduction, new_generation)
             self._top_chromosome = Chromosome(content=min(chromosomes, key=attrgetter('fitness')),
                                               fitness=min(chromosomes, key=attrgetter('fitness')).fitness)
+            generation_best_fitness.append(self._top_chromosome.fitness)
+            generation_sum_fitness.append(sum(chromosome.fitness for chromosome in chromosomes))
             self._current_iteration += 1
         print(self._current_iteration)
+
+        with open("analysis/analysis_iter_hybrid.txt", "a+") as success_file:
+            success_file.write(str(generation_best_fitness) + "\n")
+            success_file.write(str(generation_sum_fitness))
+            success_file.write("\n")
 
         return self._top_chromosome, self._current_iteration
 
@@ -167,7 +175,7 @@ if __name__ == "__main__":
         test_iters = []
         success_rate = []
         minimal_chromatic_number = 0
-        number_of_tests = 50
+        number_of_tests = 5
         while number_of_tests > 0:
             i = minimal_chromatic_number
             final_time = 0

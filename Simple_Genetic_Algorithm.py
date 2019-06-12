@@ -7,6 +7,7 @@ class Genetic_Algorithm:
     def __init__(self, n_colors):
         self._allowed_gene_values = [i for i in
                                      range(n_colors)]
+        self._iterations = 1000
         self._generation_size = 50
         self._mutation_rate = 0.7
         self._reproduction_size = 25
@@ -23,14 +24,24 @@ class Genetic_Algorithm:
         chromosomes = self.initial_population()
         self._top_chromosome = Chromosome(min(chromosomes, key=attrgetter('fitness')),
                                           min(chromosomes, key=attrgetter('fitness')).fitness)
+        generation_sum_fitness = []
+        generation_best_fitness = []
         while not self.stop_condition():
             new_generation = heapq.nlargest(self._elite_size, chromosomes)
             for_reproduction = self.selection_tournament(chromosomes)
             chromosomes = self.create_generation(for_reproduction, new_generation)
             self._top_chromosome = Chromosome(min(chromosomes, key=attrgetter('fitness')),
                                               min(chromosomes, key=attrgetter('fitness')).fitness)
+            generation_best_fitness.append(self._top_chromosome.fitness)
+            generation_sum_fitness.append(sum(chromosome.fitness for chromosome in chromosomes))
             self._current_iteration += 1
         print(self._current_iteration)
+
+
+        with open("analysis/analysis_iter_simple.txt", "a+") as success_file:
+            success_file.write(str(generation_best_fitness) + "\n")
+            success_file.write(str(generation_sum_fitness))
+            success_file.write("\n")
 
         return self._top_chromosome, self._current_iteration
 
@@ -70,7 +81,7 @@ class Genetic_Algorithm:
 
     def selection_tournament(self, chromosomes):
         return [self.selection_tournament_pick(chromosomes, self._tournament_k) for i in
-                range(self._reproduction_size)]
+                range(self._reproduction_size - self._elite_size-1)]
 
     def selection_tournament_pick(self, chromosomes, k):
         picked = []
@@ -132,7 +143,7 @@ if __name__ == "__main__":
         test_iters = []
         success_rate = []
         minimal_chromatic_number = 0
-        number_of_tests = 50
+        number_of_tests = 5
         while number_of_tests > 0:
             i = minimal_chromatic_number
             final_time = 0
